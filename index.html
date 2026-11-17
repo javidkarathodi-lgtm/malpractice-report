@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invigilator's Incident Report - MIC Arts & Science College</title>
+  <style>
+    :root {
+      --navy: #1e3a8a;
+      --navy-dark: #0f172a;
+      --gold: #d97706;
+      --crimson: #991b1b;
+      --bg: #dbeafe;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 12px;
+      background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 50%, #f1f5f9 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #0f172a;
+    }
+
+    /* Colourful Toolbar */
+    .toolbar {
+      max-width: 210mm;
+      margin: 0 auto 10px auto;
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #1d4ed8 100%);
+      color: #fff;
+      padding: 11px 16px;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(30, 58, 138, 0.25);
+      border-bottom: 3px solid #f59e0b;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .toolbar h2 {
+      margin: 0;
+      font-size: 15.5px;
+      color: #fff;
+      letter-spacing: 0.3px;
+    }
+    .btn-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 7px 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.18s;
+    }
+    .btn-add { background: #f59e0b; color: #0f172a; }
+    .btn-add:hover { background: #fbbf24; }
+    .btn-copy { background: #10b981; color: #fff; }
+    .btn-copy:hover { background: #059669; }
+    .btn-clear { background: rgba(255,255,255,0.16); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
+    .btn-clear:hover { background: rgba(255,255,255,0.28); }
+    .btn-print { background: #fff; color: #1e3a8a; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    .btn-print:hover { background: #eff6ff; }
+
+    /* Full-Page Balanced A4 Container */
+    .a4-page {
+      width: 210mm;
+      height: 296mm;
+      margin: 0 auto;
+      background: #fff;
+      padding: 8mm 13mm;
+      box-shadow: 0 8px 25px rgba(15, 23, 42, 0.16);
+      border-top: 5px solid #1e3a8a;
+      border-bottom: 4px solid #d97706;
+      font-family: 'Times New Roman', Times, serif;
+      color: #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .a4-page * {
+      font-family: 'Times New Roman', Times, serif;
+    }
+    .block-group {
+      width: 100%;
+    }
+
+    /* Official Header */
+    .header {
+      text-align: center;
+      background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
+      border: 1.5px solid #93c5fd;
+      border-bottom: 2.5px solid #1e3a8a;
+      border-radius: 6px;
+      padding: 5px 8px;
+    }
+    .header h1 {
+      font-size: 14pt;
+      margin: 0 0 2px 0;
+      text-transform: uppercase;
+      color: #1e3a8a;
+      letter-spacing: 0.4px;
+    }
+    .header h2 {
+      display: inline-block;
+      font-size: 11pt;
+      margin: 1px 0;
+      padding: 1.5px 16px;
+      background: #1e3a8a;
+      color: #fff;
+      border-radius: 12px;
+      letter-spacing: 0.5px;
+    }
+    .header p {
+      font-size: 9.5pt;
+      margin: 2px 0 0 0;
+      font-style: italic;
+      color: #991b1b;
+      font-weight: bold;
+    }
+
+    /* Single-Column Stacked Top Info Table */
+    table.info-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.8pt;
+    }
+    table.info-table td {
+      padding: 2px 4px;
+      vertical-align: middle;
+    }
+    table.info-table td.label {
+      width: 28%;
+      font-weight: bold;
+      color: #1e293b;
+    }
+    table.info-table td.colon {
+      width: 2%;
+      font-weight: bold;
+      color: #1e3a8a;
+    }
+    .fixed-centre {
+      font-weight: bold;
+      color: #000;
+      font-size: 9.8pt;
+    }
+
+    /* Colourful Section Bar */
+    .section-title {
+      font-size: 9.8pt;
+      font-weight: bold;
+      background: linear-gradient(90deg, #dbeafe 0%, #eff6ff 65%, #fef3c7 100%);
+      color: #1e3a8a;
+      padding: 3px 8px;
+      border-left: 4px solid #1e3a8a;
+      border-bottom: 1px solid #bfdbfe;
+      border-radius: 0 4px 4px 0;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sec-badge {
+      display: inline-block;
+      background: #1e3a8a;
+      color: #fff;
+      width: 16px;
+      height: 16px;
+      line-height: 16px;
+      text-align: center;
+      border-radius: 50%;
+      font-size: 8.8pt;
+      margin-right: 5px;
+      font-family: sans-serif !important;
+    }
+
+    /* Inputs & Auto-Wrapping Table Textareas */
+    input[type="text"], input[type="date"], select, textarea.cell-input {
+      width: 100%;
+      border: 1px dashed #93c5fd;
+      background: #f8fafc;
+      padding: 2px 5px;
+      font-size: 9.6pt;
+      color: #000;
+      border-radius: 3px;
+    }
+    input[type="text"], input[type="date"], select {
+      height: 21px;
+    }
+    textarea.cell-input {
+      resize: none;
+      overflow: hidden;
+      min-height: 21px;
+      line-height: 1.25;
+      display: block;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border: 1px solid #1e3a8a;
+      background: #eff6ff;
+    }
+    .print-date-text {
+      display: none;
+    }
+
+    /* Data Tables */
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.5pt;
+    }
+    table.data-table th, table.data-table td {
+      border: 1px solid #64748b;
+      padding: 2.5px 4px;
+      vertical-align: middle;
+    }
+    table.data-table th {
+      background: #1e3a8a;
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+      font-size: 9pt;
+    }
+    table.data-table tbody tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    /* Checkboxes */
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px 12px;
+      font-size: 9.6pt;
+    }
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .checkbox-item input[type="checkbox"] {
+      width: 13.5px;
+      height: 13.5px;
+      margin: 0;
+      accent-color: #1e3a8a;
+    }
+
+    .mini-btn {
+      font-family: sans-serif !important;
+      font-size: 10px;
+      padding: 1.5px 7px;
+      background: #1e3a8a;
+      color: #fff;
+      border-radius: 4px;
+    }
+    .del-btn {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 0 5px;
+      font-size: 11px;
+      height: 18px;
+      line-height: 18px;
+      font-family: sans-serif !important;
+    }
+
+    .declaration-text {
+      font-size: 9.6pt;
+      line-height: 1.3;
+      margin: 2px 0 4px 0;
+      text-align: justify;
+    }
+
+    /* Signature Above Name Layout */
+    .sign-area {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 4px;
+      gap: 15px;
+    }
+    .sign-details {
+      width: 58%;
+    }
+    .sign-block-right {
+      width: 38%;
+      text-align: center;
+      color: #1e3a8a;
+    }
+    .sign-pad {
+      height: 30px;
+      border-bottom: 1.5px solid #1e3a8a;
+      margin-bottom: 3px;
+    }
+    .sign-caption {
+      font-size: 9.2pt;
+      font-weight: bold;
+    }
+    .seal-note {
+      font-size: 8.8pt;
+      font-style: italic;
+      color: #991b1b;
+      font-weight: bold;
+      margin-top: 2px;
+    }
+
+    /* STRICT FULL-PAGE SINGLE A4 COLOURFUL PRINT */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+      html, body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+        background: #fff !important;
+        overflow: hidden;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .toolbar, .mini-btn, .del-col, input[type="date"] {
+        display: none !important;
+      }
+      .print-date-text {
+        display: inline-block !important;
+        font-weight: normal;
+        color: #000;
+      }
+      .a4-page {
+        width: 210mm;
+        height: 296mm;
+        box-shadow: none;
+        margin: 0;
+        padding: 8mm 13mm;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+        page-break-after: avoid;
+        page-break-inside: avoid;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      input[type="text"], select, textarea.cell-input {
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        appearance: none;
+        -webkit-appearance: none;
+      }
+      input[type="text"], select {
+        height: auto !important;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .a4-page {
+        width: 100%;
+        height: auto;
+        padding: 12px;
+        gap: 10px;
+      }
+      .checkbox-grid, .sign-area {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+      }
+      .sign-details, .sign-block-right {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <h2>Malpractice Incident Report Generator</h2>
+    <div class="btn-group">
+      <button class="btn-add" onclick="addCandidate()">+ Add Candidate</button>
+      <button class="btn-copy" onclick="copyForPortal()">Copy Portal Text</button>
+      <button class="btn-clear" onclick="clearForm()">Reset Form</button>
+      <button class="btn-print" onclick="window.print()">Print / Save PDF</button>
+    </div>
+  </div>
+
+  <div class="a4-page">
+    <!-- HEADER -->
+    <div class="block-group header">
+      <h1>MIC ARTS AND SCIENCE COLLEGE, ATHANIKAL, VALLUVAMBRAM</h1>
+      <h2>INVIGILATOR’S INCIDENT REPORT</h2>
+      <p>(Suspected Case of Malpractice)</p>
+    </div>
+
+    <!-- TOP EXAM DETAILS (ONE BELOW ANOTHER FOR FULL WIDTH NEATNESS) -->
+    <div class="block-group">
+      <table class="info-table">
+        <tr>
+          <td class="label">Examination Centre</td>
+          <td class="colon">:</td>
+          <td class="fixed-centre">MIC ARTS AND SCIENCE COLLEGE, ATHANIKAL, VALLUVAMBRAM</td>
+        </tr>
+        <tr>
+          <td class="label">Examination</td>
+          <td class="colon">:</td>
+          <td><input type="text" id="examName"></td>
+        </tr>
+        <tr>
+          <td class="label">Date of Examination & Session</td>
+          <td class="colon">:</td>
+          <td style="display:flex; gap:8px; align-items:center;">
+            <input type="date" id="examDate" style="width:150px;" onchange="syncDate()">
+            <span class="print-date-text" id="printExamDate"></span>
+            <select id="session" style="width:140px;">
+              <option value=""></option>
+              <option value="FN (Forenoon)">FN (Forenoon)</option>
+              <option value="AN (Afternoon)">AN (Afternoon)</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">QP Code</td>
+          <td class="colon">:</td>
+          <td><input type="text" id="qpCode"></td>
+        </tr>
+        <tr>
+          <td class="label">Subject / Course Code & Title</td>
+          <td class="colon">:</td>
+          <td><input type="text" id="subject"></td>
+        </tr>
+        <tr>
+          <td class="label">Room / Hall Number</td>
+          <td class="colon">:</td>
+          <td><input type="text" id="roomNo" style="width:150px;" oninput="syncRoom()" onkeyup="syncRoom()" onchange="syncRoom()"></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- SECTION 1 -->
+    <div class="block-group">
+      <div class="section-title">
+        <span><span class="sec-badge">1</span> Particulars of the Candidate(s)</span>
+        <button type="button" class="mini-btn" onclick="addCandidate()">+ Add Candidate</button>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:5%;">Sl.</th>
+            <th style="width:19%;">Register Number</th>
+            <th style="width:28%;">Name of the Candidate</th>
+            <th style="width:35%;">Programme / Semester</th>
+            <th style="width:9%;">Seat/Room</th>
+            <th class="del-col" style="width:4%;"></th>
+          </tr>
+        </thead>
+        <tbody id="candBody">
+          <tr>
+            <td style="text-align:center;">1</td>
+            <td><input type="text" class="cand-reg" style="text-transform:uppercase;" oninput="syncRegToSeized()"></td>
+            <td><textarea rows="1" class="cell-input cand-name" style="text-transform:uppercase;" oninput="autoGrow(this)"></textarea></td>
+            <td><textarea rows="1" class="cell-input cand-prog" oninput="autoGrow(this)"></textarea></td>
+            <td><input type="text" class="cand-seat" style="text-align:center;"></td>
+            <td class="del-col" style="text-align:center;"><button type="button" class="del-btn" onclick="removeCandRow(this)">×</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="block-group">
+      <div class="section-title">
+        <span><span class="sec-badge">2</span> Nature of Malpractice Observed</span>
+      </div>
+      <div class="checkbox-grid">
+        <label class="checkbox-item">
+          <input type="checkbox" class="mal-type" value="Unauthorized written / printed material" onchange="syncMalpracticeToSeized()">
+          <span>Possession of unauthorized written/printed material</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" class="mal-type" value="Copying from another candidate" onchange="syncMalpracticeToSeized()">
+          <span>Copying from another candidate</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" class="mal-type" value="Allowing another candidate to copy" onchange="syncMalpracticeToSeized()">
+          <span>Allowing another candidate to copy</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" class="mal-type" value="Mobile phone / electronic gadget" onchange="syncMalpracticeToSeized()">
+          <span>Possession of mobile phone/electronic gadget</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" class="mal-type" value="Exchanged answer book / question paper" onchange="syncMalpracticeToSeized()">
+          <span>Exchange of answer books/question papers</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="otherCheck" class="mal-type" value="Other" onchange="syncMalpracticeToSeized()">
+          <span>Any other (specify): <input type="text" id="otherSpecify" oninput="syncMalpracticeToSeized()" style="width:54%; display:inline-block;"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="block-group">
+      <div class="section-title">
+        <span><span class="sec-badge">3</span> Action Taken by the Invigilator</span>
+      </div>
+      <table class="info-table">
+        <tr>
+          <td class="label" style="width:31%;">Reported to Chief Superintendent</td>
+          <td class="colon">:</td>
+          <td style="width:14%;">
+            <select id="reportedCS">
+              <option value=""></option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </td>
+          <td class="label" style="width:16%; padding-left:10px;">Other Action</td>
+          <td class="colon">:</td>
+          <td><input type="text" id="actionTaken"></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="block-group">
+      <div class="section-title">
+        <span><span class="sec-badge">4</span> Details of Seized Material (if any)</span>
+        <button type="button" class="mini-btn" onclick="addSeizedRow()">+ Add Seized Item</button>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:5%;">Sl.</th>
+            <th style="width:22%;">Candidate Reg. No.</th>
+            <th style="width:54%;">Description of Material</th>
+            <th style="width:15%;">Pages / Items</th>
+            <th class="del-col" style="width:4%;"></th>
+          </tr>
+        </thead>
+        <tbody id="seizedBody">
+          <tr>
+            <td style="text-align:center;">1</td>
+            <td><input type="text" class="seized-reg" style="text-transform:uppercase;"></td>
+            <td><textarea rows="1" class="cell-input seized-desc" oninput="autoGrow(this)"></textarea></td>
+            <td><input type="text" class="seized-qty" style="text-align:center;"></td>
+            <td class="del-col" style="text-align:center;"><button type="button" class="del-btn" onclick="removeSeizedRow(this)">×</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 5 (SIGNATURE ABOVE NAME) -->
+    <div class="block-group">
+      <div class="section-title">
+        <span><span class="sec-badge">5</span> Declaration by the Invigilator</span>
+      </div>
+      <p class="declaration-text">
+        I hereby certify that the above report is true and correct to the best of my knowledge and belief. The incident was observed by me personally in Room No. <strong id="declRoom" style="color:#991b1b;">______</strong>.
+      </p>
+      <div class="sign-area">
+        <div class="sign-details">
+          <table class="info-table">
+            <tr>
+              <td class="label" style="width:36%;">Designation & Dept.</td>
+              <td class="colon">:</td>
+              <td><input type="text" id="invDesig"></td>
+            </tr>
+            <tr>
+              <td class="label">Date</td>
+              <td class="colon">:</td>
+              <td>
+                <input type="date" id="invDate" style="width:140px;" onchange="updatePrintDates()">
+                <span class="print-date-text" id="printInvDate"></span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="sign-block-right">
+          <div class="sign-pad"></div>
+          <input type="text" id="invName" placeholder="Name of the Invigilator" style="text-align:center; font-weight:bold;">
+          <div class="sign-caption">(Signature & Name of Invigilator)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 6 (SIGNATURE ABOVE PRINCIPAL NAME) -->
+    <div class="block-group">
+      <div class="section-title">
+        <span><span class="sec-badge">6</span> Counter Signature of the Principal / Chief Superintendent</span>
+      </div>
+      <p class="declaration-text">
+        I have examined the report and the seized materials. The report is forwarded to the Controller of Examinations, University of Calicut for further necessary action.
+      </p>
+      <div class="sign-area">
+        <div class="sign-details">
+          <table class="info-table">
+            <tr>
+              <td class="label" style="width:36%;">Date</td>
+              <td class="colon">:</td>
+              <td>
+                <input type="date" id="prinDate" style="width:140px;" onchange="updatePrintDates()">
+                <span class="print-date-text" id="printPrinDate"></span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="sign-block-right">
+          <div class="sign-pad"></div>
+          <input type="text" id="principalName" value="Abdul Rasheed P" style="text-align:center; font-weight:bold;">
+          <div class="sign-caption">Principal / Chief Superintendent</div>
+          <div class="seal-note">(Office Seal)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function autoGrow(el) {
+      el.style.height = '21px';
+      el.style.height = el.scrollHeight + 'px';
+    }
+
+    function formatIndianDate(isoStr) {
+      if (!isoStr) return '';
+      const parts = isoStr.split('-');
+      return parts.length === 3 ? `${parts[2]}.${parts[1]}.${parts[0]}` : isoStr;
+    }
+
+    function updatePrintDates() {
+      document.getElementById('printExamDate').textContent = formatIndianDate(document.getElementById('examDate').value);
+      document.getElementById('printInvDate').textContent = formatIndianDate(document.getElementById('invDate').value);
+      document.getElementById('printPrinDate').textContent = formatIndianDate(document.getElementById('prinDate').value);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('examDate').value = today;
+      document.getElementById('invDate').value = today;
+      document.getElementById('prinDate').value = today;
+      updatePrintDates();
+    });
+
+    function syncDate() {
+      const d = document.getElementById('examDate').value;
+      document.getElementById('invDate').value = d;
+      updatePrintDates();
+    }
+
+    let lastSyncedRoom = '';
+    function syncRoom() {
+      const r = document.getElementById('roomNo').value.trim();
+      document.getElementById('declRoom').textContent = r || '______';
+      document.querySelectorAll('.cand-seat').forEach(el => {
+        if (!el.value || el.value === lastSyncedRoom) {
+          el.value = r;
+        }
+      });
+      lastSyncedRoom = r;
+    }
+
+    function getSelectedMalpracticeText() {
+      return Array.from(document.querySelectorAll('.mal-type:checked')).map(cb => {
+        return cb.value === 'Other' ? document.getElementById('otherSpecify').value.trim() : cb.value;
+      }).filter(Boolean).join(', ');
+    }
+
+    function syncMalpracticeToSeized() {
+      const text = getSelectedMalpracticeText();
+      document.querySelectorAll('.seized-desc').forEach(el => {
+        el.value = text;
+        autoGrow(el);
+      });
+    }
+
+    function syncRegToSeized() {
+      const candRegs = document.querySelectorAll('.cand-reg');
+      const seizedRegs = document.querySelectorAll('.seized-reg');
+      candRegs.forEach((cInput, idx) => {
+        if (seizedRegs[idx]) seizedRegs[idx].value = cInput.value.toUpperCase();
+      });
+    }
+
+    function addCandidate() {
+      const tbody = document.getElementById('candBody');
+      if (tbody.rows.length >= 6) {
+        alert('Maximum 6 candidates fit on 1 A4 page.');
+        return;
+      }
+      const count = tbody.rows.length + 1;
+      const roomVal = document.getElementById('roomNo').value.trim();
+      const firstProg = document.querySelector('.cand-prog')?.value || '';
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="text-align:center;">${count}</td>
+        <td><input type="text" class="cand-reg" style="text-transform:uppercase;" oninput="syncRegToSeized()"></td>
+        <td><textarea rows="1" class="cell-input cand-name" style="text-transform:uppercase;" oninput="autoGrow(this)"></textarea></td>
+        <td><textarea rows="1" class="cell-input cand-prog" oninput="autoGrow(this)">${firstProg}</textarea></td>
+        <td><input type="text" class="cand-seat" value="${roomVal}" style="text-align:center;"></td>
+        <td class="del-col" style="text-align:center;"><button type="button" class="del-btn" onclick="removeCandRow(this)">×</button></td>
+      `;
+      tbody.appendChild(tr);
+      const newProg = tr.querySelector('.cand-prog');
+      if (newProg) autoGrow(newProg);
+      addSeizedRow();
+    }
+
+    function removeCandRow(btn) {
+      const tbody = document.getElementById('candBody');
+      if (tbody.rows.length > 1) {
+        btn.closest('tr').remove();
+        Array.from(tbody.rows).forEach((row, idx) => row.cells[0].textContent = idx + 1);
+      }
+    }
+
+    function addSeizedRow() {
+      const tbody = document.getElementById('seizedBody');
+      if (tbody.rows.length >= 6) return;
+      const count = tbody.rows.length + 1;
+      const currentMalText = getSelectedMalpracticeText();
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="text-align:center;">${count}</td>
+        <td><input type="text" class="seized-reg" style="text-transform:uppercase;"></td>
+        <td><textarea rows="1" class="cell-input seized-desc" oninput="autoGrow(this)">${currentMalText}</textarea></td>
+        <td><input type="text" class="seized-qty" style="text-align:center;"></td>
+        <td class="del-col" style="text-align:center;"><button type="button" class="del-btn" onclick="removeSeizedRow(this)">×</button></td>
+      `;
+      tbody.appendChild(tr);
+      const newDesc = tr.querySelector('.seized-desc');
+      if (newDesc) autoGrow(newDesc);
+      syncRegToSeized();
+    }
+
+    function removeSeizedRow(btn) {
+      const tbody = document.getElementById('seizedBody');
+      if (tbody.rows.length > 1) {
+        btn.closest('tr').remove();
+        Array.from(tbody.rows).forEach((row, idx) => row.cells[0].textContent = idx + 1);
+      }
+    }
+
+    function clearForm() {
+      if (!confirm('Clear all entered details?')) return;
+      document.querySelectorAll('input[type="text"], textarea').forEach(el => {
+        if (el.id !== 'principalName') {
+          el.value = '';
+          if (el.tagName === 'TEXTAREA') el.style.height = '21px';
+        }
+      });
+      document.querySelectorAll('select').forEach(sel => sel.selectedIndex = 0);
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+      document.getElementById('declRoom').textContent = '______';
+      lastSyncedRoom = '';
+    }
+
+    function copyForPortal() {
+      const malText = getSelectedMalpracticeText();
+      const examDateFmt = formatIndianDate(document.getElementById('examDate').value);
+      const cands = Array.from(document.querySelectorAll('#candBody tr')).map((tr, idx) => {
+        const reg = tr.querySelector('.cand-reg').value.toUpperCase();
+        const name = tr.querySelector('.cand-name').value.toUpperCase();
+        const prog = tr.querySelector('.cand-prog').value;
+        const seat = tr.querySelector('.cand-seat').value;
+        return reg || name ? `${idx + 1}. ${reg} - ${name} (${prog}, Seat/Room: ${seat})` : '';
+      }).filter(Boolean).join('\n');
+
+      const items = Array.from(document.querySelectorAll('#seizedBody tr')).map(tr => {
+        const reg = tr.querySelector('.seized-reg').value.toUpperCase();
+        const desc = tr.querySelector('.seized-desc').value;
+        const qty = tr.querySelector('.seized-qty').value;
+        return desc ? `${reg ? '[' + reg + '] ' : ''}${desc} (${qty || 'N/A'})` : '';
+      }).filter(Boolean).join('; ');
+
+      const summary = `MALPRACTICE REPORT DETAILS
+Exam: ${document.getElementById('examName').value}
+Date & Session: ${examDateFmt} ${document.getElementById('session').value}
+QP Code & Course: ${document.getElementById('qpCode').value} - ${document.getElementById('subject').value}
+Room No: ${document.getElementById('roomNo').value}
+
+CANDIDATE(S):
+${cands}
+
+Nature of Malpractice: ${malText}
+Seized Material: ${items}
+Invigilator: ${document.getElementById('invName').value} (${document.getElementById('invDesig').value})`;
+
+      navigator.clipboard.writeText(summary).then(() => {
+        alert('All details copied to clipboard!');
+      });
+    }
+  </script>
+</body>
+</html>
