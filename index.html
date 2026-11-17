@@ -74,7 +74,7 @@
       height: 296mm;
       margin: 0 auto;
       background: #fff;
-      padding: 8mm 13mm;
+      padding: 8mm 11mm;
       box-shadow: 0 8px 25px rgba(15, 23, 42, 0.16);
       border-top: 5px solid #1e3a8a;
       border-bottom: 4px solid #d97706;
@@ -101,11 +101,11 @@
       padding: 5px 8px;
     }
     .header h1 {
-      font-size: 14pt;
+      font-size: 13.5pt;
       margin: 0 0 2px 0;
       text-transform: uppercase;
       color: #1e3a8a;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.3px;
     }
     .header h2 {
       display: inline-block;
@@ -125,11 +125,12 @@
       font-weight: bold;
     }
 
-    /* Single-Column Stacked Top Info Table */
+    /* Top Info Table */
     table.info-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 9.8pt;
+      table-layout: fixed;
     }
     table.info-table td {
       padding: 2px 4px;
@@ -206,7 +207,7 @@
       border: 1px solid #1e3a8a;
       background: #eff6ff;
     }
-    .print-date-text {
+    .print-only-text {
       display: none;
     }
 
@@ -214,19 +215,21 @@
     table.data-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 9.5pt;
+      font-size: 9.4pt;
+      table-layout: fixed;
     }
     table.data-table th, table.data-table td {
       border: 1px solid #64748b;
       padding: 2.5px 4px;
       vertical-align: middle;
+      word-wrap: break-word;
     }
     table.data-table th {
       background: #1e3a8a;
       color: #fff;
       font-weight: bold;
       text-align: center;
-      font-size: 9pt;
+      font-size: 8.8pt;
     }
     table.data-table tbody tr:nth-child(even) {
       background: #f8fafc;
@@ -236,7 +239,7 @@
     .checkbox-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 3px 12px;
+      gap: 3px 10px;
       font-size: 9.6pt;
     }
     .checkbox-item {
@@ -263,7 +266,7 @@
     .del-btn {
       background: #fee2e2;
       color: #991b1b;
-      padding: 0 5px;
+      padding: 0 4px;
       font-size: 11px;
       height: 18px;
       line-height: 18px;
@@ -277,30 +280,42 @@
       text-align: justify;
     }
 
-    /* Signature Above Name Layout */
-    .sign-area {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-top: 4px;
-      gap: 15px;
+    /* Signature Table Layout (Prevents Full-Width Line & Guarantees Name Display) */
+    table.sign-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 3px;
     }
-    .sign-details {
+    table.sign-table td.left-col {
       width: 58%;
+      vertical-align: bottom;
     }
-    .sign-block-right {
-      width: 38%;
+    table.sign-table td.right-col {
+      width: 42%;
+      vertical-align: bottom;
       text-align: center;
-      color: #1e3a8a;
+      padding-left: 16px;
     }
     .sign-pad {
-      height: 30px;
+      height: 28px;
       border-bottom: 1.5px solid #1e3a8a;
       margin-bottom: 3px;
     }
-    .sign-caption {
-      font-size: 9.2pt;
+    .sign-name-input {
+      text-align: center;
       font-weight: bold;
+      color: #000;
+    }
+    .sign-name-print {
+      display: none;
+      font-weight: bold;
+      font-size: 9.8pt;
+      color: #000;
+    }
+    .sign-caption {
+      font-size: 9pt;
+      font-weight: bold;
+      color: #1e3a8a;
     }
     .seal-note {
       font-size: 8.8pt;
@@ -326,20 +341,22 @@
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
       }
-      .toolbar, .mini-btn, .del-col, input[type="date"] {
+      .toolbar, .mini-btn, .del-col, input[type="date"], .sign-name-input {
         display: none !important;
       }
-      .print-date-text {
+      .print-only-text {
         display: inline-block !important;
-        font-weight: normal;
         color: #000;
+      }
+      .sign-name-print {
+        display: block !important;
       }
       .a4-page {
         width: 210mm;
         height: 296mm;
         box-shadow: none;
         margin: 0;
-        padding: 8mm 13mm;
+        padding: 8mm 10mm;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -368,12 +385,8 @@
         padding: 12px;
         gap: 10px;
       }
-      .checkbox-grid, .sign-area {
+      .checkbox-grid {
         grid-template-columns: 1fr;
-        flex-direction: column;
-      }
-      .sign-details, .sign-block-right {
-        width: 100%;
       }
     }
   </style>
@@ -398,7 +411,7 @@
       <p>(Suspected Case of Malpractice)</p>
     </div>
 
-    <!-- TOP EXAM DETAILS (ONE BELOW ANOTHER FOR FULL WIDTH NEATNESS) -->
+    <!-- TOP EXAM DETAILS -->
     <div class="block-group">
       <table class="info-table">
         <tr>
@@ -415,8 +428,8 @@
           <td class="label">Date of Examination & Session</td>
           <td class="colon">:</td>
           <td style="display:flex; gap:8px; align-items:center;">
-            <input type="date" id="examDate" style="width:150px;" onchange="syncDate()">
-            <span class="print-date-text" id="printExamDate"></span>
+            <input type="date" id="examDate" style="width:145px;" onchange="syncDate()">
+            <span class="print-only-text" id="printExamDate"></span>
             <select id="session" style="width:140px;">
               <option value=""></option>
               <option value="FN (Forenoon)">FN (Forenoon)</option>
@@ -437,7 +450,7 @@
         <tr>
           <td class="label">Room / Hall Number</td>
           <td class="colon">:</td>
-          <td><input type="text" id="roomNo" style="width:150px;" oninput="syncRoom()" onkeyup="syncRoom()" onchange="syncRoom()"></td>
+          <td><input type="text" id="roomNo" style="width:145px;" oninput="syncRoom()" onkeyup="syncRoom()" onchange="syncRoom()"></td>
         </tr>
       </table>
     </div>
@@ -453,9 +466,9 @@
           <tr>
             <th style="width:5%;">Sl.</th>
             <th style="width:19%;">Register Number</th>
-            <th style="width:28%;">Name of the Candidate</th>
+            <th style="width:27%;">Name of the Candidate</th>
             <th style="width:35%;">Programme / Semester</th>
-            <th style="width:9%;">Seat/Room</th>
+            <th style="width:10%;">Seat/Room</th>
             <th class="del-col" style="width:4%;"></th>
           </tr>
         </thead>
@@ -500,7 +513,7 @@
         </label>
         <label class="checkbox-item">
           <input type="checkbox" id="otherCheck" class="mal-type" value="Other" onchange="syncMalpracticeToSeized()">
-          <span>Any other (specify): <input type="text" id="otherSpecify" oninput="syncMalpracticeToSeized()" style="width:54%; display:inline-block;"></span>
+          <span>Any other (specify): <input type="text" id="otherSpecify" oninput="syncMalpracticeToSeized()" style="width:52%; display:inline-block;"></span>
         </label>
       </div>
     </div>
@@ -521,7 +534,7 @@
               <option value="No">No</option>
             </select>
           </td>
-          <td class="label" style="width:16%; padding-left:10px;">Other Action</td>
+          <td class="label" style="width:16%; padding-left:8px;">Other Action</td>
           <td class="colon">:</td>
           <td><input type="text" id="actionTaken"></td>
         </tr>
@@ -556,7 +569,7 @@
       </table>
     </div>
 
-    <!-- SECTION 5 (SIGNATURE ABOVE NAME) -->
+    <!-- SECTION 5 (SIGNATURE ABOVE INVIGILATOR NAME) -->
     <div class="block-group">
       <div class="section-title">
         <span><span class="sec-badge">5</span> Declaration by the Invigilator</span>
@@ -564,33 +577,36 @@
       <p class="declaration-text">
         I hereby certify that the above report is true and correct to the best of my knowledge and belief. The incident was observed by me personally in Room No. <strong id="declRoom" style="color:#991b1b;">______</strong>.
       </p>
-      <div class="sign-area">
-        <div class="sign-details">
-          <table class="info-table">
-            <tr>
-              <td class="label" style="width:36%;">Designation & Dept.</td>
-              <td class="colon">:</td>
-              <td><input type="text" id="invDesig"></td>
-            </tr>
-            <tr>
-              <td class="label">Date</td>
-              <td class="colon">:</td>
-              <td>
-                <input type="date" id="invDate" style="width:140px;" onchange="updatePrintDates()">
-                <span class="print-date-text" id="printInvDate"></span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="sign-block-right">
-          <div class="sign-pad"></div>
-          <input type="text" id="invName" placeholder="Name of the Invigilator" style="text-align:center; font-weight:bold;">
-          <div class="sign-caption">(Signature & Name of Invigilator)</div>
-        </div>
-      </div>
+      <table class="sign-table">
+        <tr>
+          <td class="left-col">
+            <table class="info-table">
+              <tr>
+                <td class="label" style="width:36%;">Designation & Dept.</td>
+                <td class="colon">:</td>
+                <td><input type="text" id="invDesig"></td>
+              </tr>
+              <tr>
+                <td class="label">Date</td>
+                <td class="colon">:</td>
+                <td>
+                  <input type="date" id="invDate" style="width:135px;" onchange="updatePrintDates()">
+                  <span class="print-only-text" id="printInvDate"></span>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td class="right-col">
+            <div class="sign-pad"></div>
+            <input type="text" id="invName" class="sign-name-input" placeholder="Name of the Invigilator" oninput="syncSignNames()">
+            <div class="sign-name-print" id="printInvName"></div>
+            <div class="sign-caption">(Signature & Name of Invigilator)</div>
+          </td>
+        </tr>
+      </table>
     </div>
 
-    <!-- SECTION 6 (SIGNATURE ABOVE PRINCIPAL NAME) -->
+    <!-- SECTION 6 (SIGNATURE ABOVE PRINCIPAL NAME: ABDUL RASHEED P) -->
     <div class="block-group">
       <div class="section-title">
         <span><span class="sec-badge">6</span> Counter Signature of the Principal / Chief Superintendent</span>
@@ -598,26 +614,29 @@
       <p class="declaration-text">
         I have examined the report and the seized materials. The report is forwarded to the Controller of Examinations, University of Calicut for further necessary action.
       </p>
-      <div class="sign-area">
-        <div class="sign-details">
-          <table class="info-table">
-            <tr>
-              <td class="label" style="width:36%;">Date</td>
-              <td class="colon">:</td>
-              <td>
-                <input type="date" id="prinDate" style="width:140px;" onchange="updatePrintDates()">
-                <span class="print-date-text" id="printPrinDate"></span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="sign-block-right">
-          <div class="sign-pad"></div>
-          <input type="text" id="principalName" value="Abdul Rasheed P" style="text-align:center; font-weight:bold;">
-          <div class="sign-caption">Principal / Chief Superintendent</div>
-          <div class="seal-note">(Office Seal)</div>
-        </div>
-      </div>
+      <table class="sign-table">
+        <tr>
+          <td class="left-col">
+            <table class="info-table">
+              <tr>
+                <td class="label" style="width:36%;">Date</td>
+                <td class="colon">:</td>
+                <td>
+                  <input type="date" id="prinDate" style="width:135px;" onchange="updatePrintDates()">
+                  <span class="print-only-text" id="printPrinDate"></span>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td class="right-col">
+            <div class="sign-pad"></div>
+            <input type="text" id="principalName" class="sign-name-input" value="Abdul Rasheed P" oninput="syncSignNames()">
+            <div class="sign-name-print" id="printPrincipalName">Abdul Rasheed P</div>
+            <div class="sign-caption">Principal / Chief Superintendent</div>
+            <div class="seal-note">(Office Seal)</div>
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
 
@@ -639,12 +658,18 @@
       document.getElementById('printPrinDate').textContent = formatIndianDate(document.getElementById('prinDate').value);
     }
 
+    function syncSignNames() {
+      document.getElementById('printInvName').textContent = document.getElementById('invName').value.trim();
+      document.getElementById('printPrincipalName').textContent = document.getElementById('principalName').value.trim();
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('examDate').value = today;
       document.getElementById('invDate').value = today;
       document.getElementById('prinDate').value = today;
       updatePrintDates();
+      syncSignNames();
     });
 
     function syncDate() {
@@ -760,6 +785,7 @@
       document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
       document.getElementById('declRoom').textContent = '______';
       lastSyncedRoom = '';
+      syncSignNames();
     }
 
     function copyForPortal() {
